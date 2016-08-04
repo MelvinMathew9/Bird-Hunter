@@ -40,7 +40,7 @@ public class bird extends javax.swing.JFrame {
     int s = 1, seconds = 90, minute = 1;
     java.util.Timer sparkTimer = null;
     int b1 = 5, b2 = 5, b3 = 5;
-    AudioStream BGMGlobal;
+    AudioStream BGMGlobal, tick;
     int prevR = 0, r = 1;
     java.util.Timer timeKeeper = null;
     TimerTask timeKeeperTask = new TimerTask() {
@@ -137,9 +137,22 @@ public class bird extends javax.swing.JFrame {
                 formMouseReleased(evt);
             }
         });
+        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
+            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
+            }
+            public void windowLostFocus(java.awt.event.WindowEvent evt) {
+                formWindowLostFocus(evt);
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowClosed(java.awt.event.WindowEvent evt) {
+                formWindowClosed(evt);
+            }
+            public void windowDeactivated(java.awt.event.WindowEvent evt) {
+                formWindowDeactivated(evt);
             }
             public void windowOpened(java.awt.event.WindowEvent evt) {
                 formWindowOpened(evt);
@@ -357,165 +370,203 @@ public class bird extends javax.swing.JFrame {
 
         if (!dragging) {
             dragging = true;
-
             switch (bullet) {
-                case 0:
-                    bullets.setVisible(true);
-                    bullets1.setVisible(true);
-                    bullets2.setVisible(true);
-                    bullets3.setVisible(true);
-                    bullets4.setVisible(true);
-                    spark.setVisible(false);
-                    bullet = 5;
-                    d = 1;
-                    sound("reload");
+            case 0:
+                bullets.setVisible(true);
+                bullets1.setVisible(true);
+                bullets2.setVisible(true);
+                bullets3.setVisible(true);
+                bullets4.setVisible(true);
+                spark.setVisible(false);
+                bullet = 5;
+                d = 1;
+                sound("reload");
 
-                    break;
-                case 1:
-                    spark.setVisible(true);
-                    bullets.setVisible(false);
-                    bullets1.setVisible(false);
-                    bullets2.setVisible(false);
-                    bullets3.setVisible(false);
-                    bullets4.setVisible(false);
-                    bullet--;
-                    d = 0;
-                    sound("gunshot");
+                break;
+            case 1:
+                spark.setVisible(true);
+                bullets.setVisible(false);
+                bullets1.setVisible(false);
+                bullets2.setVisible(false);
+                bullets3.setVisible(false);
+                bullets4.setVisible(false);
+                bullet--;
+                d = 0;
+                sound("gunshot");
 
-                    break;
-                case 2:
-                    bullets.setVisible(true);
-                    bullets1.setVisible(false);
-                    spark.setVisible(true);
-                    bullets2.setVisible(false);
-                    bullets3.setVisible(false);
-                    bullets4.setVisible(false);
-                    bullet--;
-                    d = 0;
-                    sound("gunshot");
+                break;
+            case 2:
+                bullets.setVisible(true);
+                bullets1.setVisible(false);
+                spark.setVisible(true);
+                bullets2.setVisible(false);
+                bullets3.setVisible(false);
+                bullets4.setVisible(false);
+                bullet--;
+                d = 0;
+                sound("gunshot");
 
-                    break;
-                case 3:
-                    bullets.setVisible(true);
-                    bullets1.setVisible(true);
-                    spark.setVisible(true);
-                    bullets2.setVisible(false);
-                    bullets3.setVisible(false);
-                    bullets4.setVisible(false);
-                    bullet--;
-                    d = 0;
-                    sound("gunshot");
+                break;
+            case 3:
+                bullets.setVisible(true);
+                bullets1.setVisible(true);
+                spark.setVisible(true);
+                bullets2.setVisible(false);
+                bullets3.setVisible(false);
+                bullets4.setVisible(false);
+                bullet--;
+                d = 0;
+                sound("gunshot");
 
-                    break;
-                case 4:
-                    bullets.setVisible(true);
-                    bullets1.setVisible(true);
-                    spark.setVisible(true);
-                    bullets2.setVisible(true);
-                    bullets3.setVisible(false);
-                    bullets4.setVisible(false);
-                    bullet--;
-                    d = 0;
-                    sound("gunshot");
-                    break;
-                case 5:
-                    bullets.setVisible(true);
-                    bullets1.setVisible(true);
-                    spark.setVisible(true);
-                    bullets2.setVisible(true);
-                    bullets3.setVisible(true);
-                    bullets4.setVisible(false);
-                    bullet--;
-                    d = 0;
-                    sound("gunshot");
-                    break;
+                break;
+            case 4:
+                bullets.setVisible(true);
+                bullets1.setVisible(true);
+                spark.setVisible(true);
+                bullets2.setVisible(true);
+                bullets3.setVisible(false);
+                bullets4.setVisible(false);
+                bullet--;
+                d = 0;
+                sound("gunshot");
+                break;
+            case 5:
+                bullets.setVisible(true);
+                bullets1.setVisible(true);
+                spark.setVisible(true);
+                bullets2.setVisible(true);
+                bullets3.setVisible(true);
+                bullets4.setVisible(false);
+                bullet--;
+                d = 0;
+                sound("gunshot");
+                break;
 
-                default:
-                    break;
-            }
-            if (d != 1) {
-                int x = evt.getX();
-                int y = evt.getY();
-                int a = bd.getX();
-                int a1 = bd1.getX();
-                int b1 = bd1.getY();
+            default:
+                break;
+        }
+        if (d != 1) {
+            int x = evt.getX();
+            int y = evt.getY();
+            int a = bd.getX();
+            int a1 = bd1.getX();
+            int b1 = bd1.getY();
 
-                int a2 = bd2.getX();
-                int a3 = bd3.getX();
-                int b2 = bd2.getY();
-                int b3 = bd3.getY();
-                int b = bd.getY();
-                int arr[] = {
-                    10, 70, 50, 200, 150, 60, 130, 220, 70, 100, 250, 75, -40, -50, -10, -56, -12, 103, 85, 40, 190, 160
-                };
-                r = 0 + (int) (Math.random() * arr.length);
-                prevR = r;
+            int a2 = bd2.getX();
+            int a3 = bd3.getX();
+            int b2 = bd2.getY();
+            int b3 = bd3.getY();
+            int b = bd.getY();
+            int arr[] = {
+                10, 70, 50, 200, 150, 60, 130, 220, 70, 100, 250, 75, -40, -50, -10, -56, -12, 103, 85, 40, 190, 160
+            };
+            r = 0 + (int) (Math.random() * arr.length);
+            prevR = r;
 
-                if (x >= a + 50 && x <= a + 135 && y >= b + 52 && y <= b + 82) {
-                    if (y > 360) {
-                        score.setText(s++ + "");
-                        bd.setLocation(-1225, 0);
-                        bd4.setLocation(x, y);
-                        bd4.setVisible(true);
+            if (x >= a + 50 && x <= a + 135 && y >= b + 52 && y <= b + 82) {
 
-                    } else {
-                        score.setText(s++ + "");
-                        bd.setLocation(-1225, b + arr[r]);
-                        bd4.setLocation(x, y);
-                        bd4.setVisible(true);
-
-                    }
-
-                } else if (x >= a2 + 25 && x <= a2 + 70 && y >= b2 + 25 && y <= b2 + 70) {
-                    if (y > 360) {
-                        score.setText(s++ + "");
-                        bd2.setLocation(1450, 0);
-                        bd4.setLocation(x, y);
-                        bd4.setVisible(true);
-
-                    } else {
-                        score.setText(s++ + "");
-                        bd2.setLocation(1450, b2 + arr[r]);
-                        bd4.setLocation(x, y);
-                        bd4.setVisible(true);
-
-                    }
-
-                } else if (x >= a3 + 40 && x <= a3 + 120 && y >= b3 + 55 && y <= b3 + 85) {
-                    if (y > 360) {
-                        score.setText(s++ + "");
-                        bd3.setLocation(2450, 0);
-                        bd4.setLocation(x, y);
-                        bd4.setVisible(true);
-
-                    } else {
-                        score.setText(s++ + "");
-                        bd3.setLocation(2450, b3 + arr[r]);
-                        bd4.setLocation(x, y);
-                        bd4.setVisible(true);
-                    }
-
-                } else if ((x >= a1 + 32 && x <= a1 + 100 && y >= b1 + 30 && y <= b1 + 85) || (x >= a1 + 10 && x <= a1 + 50 && y >= b1 - 5 && y <= b1 + 20)) {
-
+                if (y > 360) {
                     score.setText(s++ + "");
-                    bd1.setLocation(5400, 500);
+                    bd.setLocation(-1225, 0);
+                    bd4.setLocation(x, y);
+                    bd4.setVisible(true);
+
+                } else {
+                    score.setText(s++ + "");
+                    bd.setLocation(-1225, b + arr[r]);
                     bd4.setLocation(x, y);
                     bd4.setVisible(true);
 
                 }
-                if (bd4.isVisible()) {
-                    java.util.Timer t = new java.util.Timer();
-                    t.schedule(new TimerTask() {
-                        @Override
-                        public void run() {
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
 
-                            bd4.setVisible(false);
-
-                        }
-                    }, 2000);
+                    bird2 nl = new bird2();
+                    nl.setVisible(true);
+                    this.dispose();
 
                 }
+
+            } else if (x >= a2 + 25 && x <= a2 + 70 && y >= b2 + 25 && y <= b2 + 70) {
+                if (y > 360) {
+                    score.setText(s++ + "");
+                    bd2.setLocation(1450, 0);
+                    bd4.setLocation(x, y);
+                    bd4.setVisible(true);
+
+                } else {
+                    score.setText(s++ + "");
+                    bd2.setLocation(1450, b2 + arr[r]);
+                    bd4.setLocation(x, y);
+                    bd4.setVisible(true);
+
+                }
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
+                    bird2 nl = new bird2();
+                    nl.setVisible(true);
+                    this.dispose();
+
+                }
+
+            } else if (x >= a3 + 40 && x <= a3 + 120 && y >= b3 + 55 && y <= b3 + 85) {
+                if (y > 360) {
+                    score.setText(s++ + "");
+                    bd3.setLocation(2450, 0);
+                    bd4.setLocation(x, y);
+                    bd4.setVisible(true);
+
+                } else {
+                    score.setText(s++ + "");
+                    bd3.setLocation(2450, b3 + arr[r]);
+                    bd4.setLocation(x, y);
+                    bd4.setVisible(true);
+                }
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
+                    bird2 nl = new bird2();
+                    nl.setVisible(true);
+                    this.dispose();
+
+                }
+
+            } else if ((x >= a1 + 32 && x <= a1 + 100 && y >= b1 + 30 && y <= b1 + 85) || (x >= a1 + 10 && x <= a1 + 50 && y >= b1 - 5 && y <= b1 + 20)) {
+
+                score.setText(s++ + "");
+                bd1.setLocation(5400, 500);
+                bd4.setLocation(x, y);
+                bd4.setVisible(true);
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
+                    bird2 nl = new bird2();
+                    nl.setVisible(true);
+                    this.dispose();
+
+                }
+
             }
+
+        }
+        if (bd4.isVisible()) {
+            java.util.Timer t = new java.util.Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+
+                    bd4.setVisible(false);
+
+                }
+            }, 2000);
+
+        }
 
         } else {
             int a = evt.getX();
@@ -625,8 +676,7 @@ public class bird extends javax.swing.JFrame {
     }//GEN-LAST:event_formMouseWheelMoved
 
     private void formMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_formMouseClicked
-
-        switch (bullet) {
+switch (bullet) {
             case 0:
                 bullets.setVisible(true);
                 bullets1.setVisible(true);
@@ -734,7 +784,11 @@ public class bird extends javax.swing.JFrame {
                     bd4.setVisible(true);
 
                 }
-                if (s - 1 >= 50) {JOptionPane.showMessageDialog(this,"Congatulation You Made It to Next Level");
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
+
                     bird2 nl = new bird2();
                     nl.setVisible(true);
                     this.dispose();
@@ -755,7 +809,10 @@ public class bird extends javax.swing.JFrame {
                     bd4.setVisible(true);
 
                 }
-                if (s - 1 >= 50) {JOptionPane.showMessageDialog(this,"Congatulation You Made It to Next Level");
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
                     bird2 nl = new bird2();
                     nl.setVisible(true);
                     this.dispose();
@@ -775,7 +832,10 @@ public class bird extends javax.swing.JFrame {
                     bd4.setLocation(x, y);
                     bd4.setVisible(true);
                 }
-                if (s - 1 >= 50) {JOptionPane.showMessageDialog(this,"Congatulation You Made It to Next Level");
+                if (s - 1 >= 50) {
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
                     bird2 nl = new bird2();
                     nl.setVisible(true);
                     this.dispose();
@@ -789,7 +849,9 @@ public class bird extends javax.swing.JFrame {
                 bd4.setLocation(x, y);
                 bd4.setVisible(true);
                 if (s - 1 >= 50) {
-                    JOptionPane.showMessageDialog(this,"Congatulation You Made It to Next Level");
+                    timeKeeper.cancel();
+                    AudioPlayer.player.stop(tick);
+                    JOptionPane.showMessageDialog(this, "Congatulation You Made It to Next Level");
                     bird2 nl = new bird2();
                     nl.setVisible(true);
                     this.dispose();
@@ -811,6 +873,7 @@ public class bird extends javax.swing.JFrame {
             }, 2000);
 
         }
+        
     }//GEN-LAST:event_formMouseClicked
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
@@ -842,6 +905,7 @@ public class bird extends javax.swing.JFrame {
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ESCAPE) {
             int currTime = pause();
+
             int choice = JOptionPane.showConfirmDialog(this, "Do You Want To Exit", "PAUSED", JOptionPane.YES_NO_OPTION);
             switch (choice) {
                 case JOptionPane.YES_OPTION:
@@ -856,10 +920,26 @@ public class bird extends javax.swing.JFrame {
         }
 
     }//GEN-LAST:event_formKeyPressed
+
+    private void formWindowLostFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowLostFocus
+
+
+    }//GEN-LAST:event_formWindowLostFocus
+
+    private void formWindowDeactivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowDeactivated
+
+    }//GEN-LAST:event_formWindowDeactivated
+
+    private void formWindowClosed(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosed
+        stopBGM(BGMGlobal);
+        AudioPlayer.player.stop(tick);
+    }//GEN-LAST:event_formWindowClosed
     public AudioStream soundBGM() {
         BGMGlobal = null;
         try {
             InputStream music = getClass().getResourceAsStream("/bg.wav");
+            InputStream music1 = getClass().getResourceAsStream("/tick.wav");
+            tick = new AudioStream(music1);
             BGMGlobal = new AudioStream(music);
             AudioPlayer.player.start(BGMGlobal);
         } catch (Exception e) {
